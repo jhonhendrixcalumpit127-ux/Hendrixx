@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Jhon Hendrix Calumpit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #b026ff;
+            --neon-pink: #ff2d95;
+            --bg-dark: #050714;
+            --bg-card: rgba(10, 14, 39, 0.7);
+            --text-light: #e0e9ff;
+        }
+
+        body {
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at top left, rgba(0, 240, 255, 0.08), transparent 50%),
+                radial-gradient(circle at bottom right, rgba(176, 38, 255, 0.08), transparent 50%);
+            min-height: 100vh;
+            color: var(--text-light);
+            padding-bottom: 100px;
+            overflow-x: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            width: 0%;
+            z-index: 999;
+            transition: width 0.1s ease;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .page-header h1 {
+            font-size: 1.9rem;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: rgba(224, 233, 255, 0.6);
+            font-size: 0.95rem;
+        }
+
+        .content {
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.35s ease;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: cardFadeIn 0.7s ease forwards;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+        .project-card:nth-child(4) { animation-delay: 0.4s; }
+        .project-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .project-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .project-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(0, 240, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon-blue);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .project-header h3 {
+            font-size: 1.05rem;
+            margin-bottom: 3px;
+        }
+
+        .project-header .subtitle {
+            font-size: 0.8rem;
+            color: rgba(224, 233, 255, 0.5);
+        }
+
+        .project-card p {
+            color: rgba(224, 233, 255, 0.7);
+            font-size: 0.88rem;
+            line-height: 1.55;
+            margin-bottom: 12px;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tech-tag {
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(176, 38, 255, 0.12);
+            border: 1px solid rgba(176, 38, 255, 0.25);
+            color: #d4a5ff;
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 3px 9px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .status-done {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .status-progress {
+            background: rgba(0, 240, 255, 0.12);
+            color: var(--neon-blue);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(8, 12, 34, 0.85);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 10px 20px;
+            border-top: 1px solid rgba(0, 240, 255, 0.1);
+            z-index: 100;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(224, 233, 255, 0.4);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            color: var(--neon-blue);
+            transform: translateY(-3px);
+        }
+
+        .nav-btn i {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+
+        .nav-btn span {
+            font-size: 0.65rem;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="page-header">
+        <h1>Projects</h1>
+        <p>My creations & outputs</p>
+    </div>
+
+    <div class="content">
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon"><i class="fas fa-globe"></i></div>
+                <div>
+                    <h3>Personal Portfolio</h3>
+                    <div class="subtitle">Neon Glass Website</div>
+                </div>
+            </div>
+            <p>A mobile-friendly multi-page portfolio with glassmorphism cards, neon accents, typing effect, and bottom navigation.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+                <span class="tech-tag">JavaScript</span>
+            </div>
+            <span class="status-badge status-done">Completed</span>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon"><i class="fas fa-code"></i></div>
+                <div>
+                    <h3>Hendrix2 About Page</h3>
+                    <div class="subtitle">Interactive Profile</div>
+                </div>
+            </div>
+            <p>Dark-themed personal page with animated orbs, skill cards, timeline, and scroll reveal effects.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+                <span class="tech-tag">Animations</span>
+            </div>
+            <span class="status-badge status-done">Completed</span>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon"><i class="fas fa-heart"></i></div>
+                <div>
+                    <h3>300 Reasons Love My Babyy</h3>
+                    <div class="subtitle">Canva Design Project</div>
+                </div>
+            </div>
+            <p>A creative Canva project collecting 300 reasons — designed with care for someone special.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">Canva</span>
+                <span class="tech-tag">Design</span>
+            </div>
+            <span class="status-badge status-done">Completed</span>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon"><i class="fas fa-robot"></i></div>
+                <div>
+                    <h3>AI Prompt Experiments</h3>
+                    <div class="subtitle">EmpTech / Personal</div>
+                </div>
+            </div>
+            <p>Exploring prompt engineering for school quizzes, summaries, coding help, and creative writing.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">AI</span>
+                <span class="tech-tag">Prompting</span>
+            </div>
+            <span class="status-badge status-progress">Ongoing</span>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon"><i class="fas fa-table"></i></div>
+                <div>
+                    <h3>Spreadsheet Activities</h3>
+                    <div class="subtitle">EmpTech Outputs</div>
+                </div>
+            </div>
+            <p>Data organization, analysis, and clean sheet outputs for Empowerment Technologies lessons and quizzes.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">Spreadsheets</span>
+                <span class="tech-tag">Data</span>
+            </div>
+            <span class="status-badge status-progress">Ongoing</span>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="works.html" class="nav-btn">
+            <i class="fas fa-book"></i>
+            <span>Works</span>
+        </a>
+        <a href="projects.html" class="nav-btn active">
+            <i class="fas fa-folder"></i>
+            <span>Projects</span>
+        </a>
+        <a href="contact.html" class="nav-btn">
+            <i class="fas fa-paper-plane"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+    </script>
+</body>
+</html>
